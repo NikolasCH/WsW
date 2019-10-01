@@ -1,0 +1,8 @@
+<resources>
+     <!-- TODO: Replace this by your app's app ID! -->
+    <string name="app_id">748257953029</string>
+
+    <!-- TODO: Replace these by your achievement/leaderboard IDs! -->
+    
+    <string name="leaderboard_easy">CgkIhYqZveMVEAIQAA</string>
+</resources>
