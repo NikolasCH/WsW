@@ -401,6 +401,9 @@ public class Main : MonoBehaviour {
 			Coin+=AddScore;
 			PlayerPrefs.SetInt("Coin", Coin);
 			CoinUp();
+
+			if(AddScore>0)
+				Main.onShow();
 	}	
 	
 	public static void CoinUp ( ) {	
@@ -479,7 +482,7 @@ public class Main : MonoBehaviour {
 			{
 				onShowInterstitial ();
 			}	else	{	
-				if (ShowTime > 4)
+				if (ShowTime > 9)
 					ShowTime = 0;	
 			}	
 			ShowTime++;

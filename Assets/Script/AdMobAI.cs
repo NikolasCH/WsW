@@ -29,7 +29,7 @@ public class AdMobAI : MonoBehaviour {
 		if(show && PlayerPrefs.GetInt("Ad")!=1)
 		{
 			time+=Time.deltaTime;
-			if(time>=30){
+			if(time>=60){
 				show = false;
 				onWait();
 			}
@@ -39,7 +39,7 @@ public class AdMobAI : MonoBehaviour {
 		{
 			wait_time+=Time.deltaTime;
 			
-			if(wait_time>=15){
+			if(wait_time>=60){
 				wait=false;
 				onShowSmartBanner();
 			}

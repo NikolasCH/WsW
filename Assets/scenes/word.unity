@@ -2127,11 +2127,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3194331455249976024, guid: 1e470ba71029183499663a0b3374d4a7,
-        type: 3}
-      propertyPath: m_Name
-      value: Panel_buys
-      objectReference: {fileID: 0}
     - target: {fileID: 3194331455249976029, guid: 1e470ba71029183499663a0b3374d4a7,
         type: 3}
       propertyPath: hover.r
@@ -2161,6 +2156,11 @@ PrefabInstance:
         type: 3}
       propertyPath: pressed.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3194331455249976024, guid: 1e470ba71029183499663a0b3374d4a7,
+        type: 3}
+      propertyPath: m_Name
+      value: Panel_buys
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3194331455249976027, guid: 1e470ba71029183499663a0b3374d4a7, type: 3}
@@ -5590,19 +5590,19 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 84
-  mHeight: 36
+  mWidth: 80
+  mHeight: 52
   mDepth: 6
   mMat: {fileID: 0}
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 2.3333333
+  aspectRatio: 1.5925926
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 3eb4dfb31077efe4a8af42c1f825ee51, type: 3}
   mFont: {fileID: 0}
-  mText: "\u043E\u0442\u043A\u0440\u044B\u0442\u044C\n\u0431\u0443\u043A\u0432\u044B"
-  mFontSize: 18
+  mText: "\u043E\u0442\u043A\u0440\u044B\u0442\u044C\n\u043F\u043E \u043E\u0434\u043D\u043E\u0439\n\u0431\u0443\u043A\u0432\u0435"
+  mFontSize: 17
   mFontStyle: 0
   mAlignment: 0
   mEncoding: 1
@@ -5789,7 +5789,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 2.3333333
+  aspectRatio: 2.2941177
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: 3eb4dfb31077efe4a8af42c1f825ee51, type: 3}
   mFont: {fileID: 0}

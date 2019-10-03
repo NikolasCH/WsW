@@ -16,8 +16,7 @@ public class Map : MonoBehaviour {
 	// Update is called once per frame
 	void Start () {
 		
-		Main.onShow();
-
+		
 		Main.ScoreUp();
 
 		Main.CoinUp();

@@ -5,6 +5,8 @@ public class Buttons : Main {
 
 	private AsyncOperation async;
 	private bool Loading = false;
+
+	private bool sound = true;
 	private int scene = 0;
 
 	private GameObject Panel_Buy;
@@ -15,6 +17,12 @@ public class Buttons : Main {
 	{
 		Main.panel_buy = false;	
 		Panel_Buy = GameObject.Find("Panel_Buy");
+
+		if (PlayerPrefs.GetInt ("sound") == 1 && gameObject.name == "sound") {
+			sound = false;
+            GetComponentInChildren<UISprite>().spriteName = "btn_sound_off";
+			AudioListener.volume = 0;
+		} 	
 		//	label = (UILabel)gameObject.GetComponent("UILabel");		
 	}
 
@@ -27,6 +35,9 @@ public class Buttons : Main {
 	{
 		if (isDown == false)
 		{
+
+			Debug.Log(gameObject.name);
+
 			if(gameObject.name=="More")
 				Main.showMoreApps();
 
@@ -104,6 +115,21 @@ public class Buttons : Main {
 
 			if(gameObject.name=="GameCenter")
 				Main.onLeaderBoard();	
+
+			if (gameObject.name == "sound") {
+				Debug.Log("Here");
+				if (sound) {					
+					PlayerPrefs.SetInt ("sound", 1);
+					sound = false;
+                    gameObject.GetComponentInChildren<UISprite>().spriteName = "btn_sound_off";
+					AudioListener.volume = 0;
+				} else {
+					PlayerPrefs.SetInt ("sound", 0);
+					sound = true;
+                    gameObject.GetComponentInChildren<UISprite>().spriteName = "btn_sound_on";
+					AudioListener.volume = 1;
+				}
+			}
 		}
 	}
 
