@@ -10,11 +10,7 @@ public class LoadingScene : MonoBehaviour {
 	private bool nextLoading = false;
 	private int scene = 0;
 
-	void Start () 
-	{
-	//	label = (UILabel)gameObject.GetComponent("UILabel");	
-		
-	}
+
 	
 	void next () 
 	{
@@ -36,9 +32,5 @@ public class LoadingScene : MonoBehaviour {
 		yield return async;		
 	}
 	
-	void Update () 
-	{
-		//if (nextLoading) label.text = "Loading..."+(Mathf.Floor(async.progress*100)).ToString();
-	}
 }
 

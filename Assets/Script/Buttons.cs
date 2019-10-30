@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using SA.Android.Firebase.Analytics;
 public class Buttons : Main {
 
 	private AsyncOperation async;
@@ -10,6 +10,7 @@ public class Buttons : Main {
 	private int scene = 0;
 
 	private GameObject Panel_Buy;
+
 
 	//	private UILabel label;
 	
@@ -22,13 +23,7 @@ public class Buttons : Main {
 			sound = false;
             GetComponentInChildren<UISprite>().spriteName = "btn_sound_off";
 			AudioListener.volume = 0;
-		} 	
-		//	label = (UILabel)gameObject.GetComponent("UILabel");		
-	}
-
-	void Update () 
-	{
-		//if (nextLoading) label.text = "Loading..."+(Mathf.Floor(async.progress*100)).ToString();
+		} 		
 	}
 
 	void OnPress (bool isDown)
@@ -36,10 +31,25 @@ public class Buttons : Main {
 		if (isDown == false)
 		{
 
-			Debug.Log(gameObject.name);
+			AN_FirebaseAnalytics.LogEvent(gameObject.name);
 
 			if(gameObject.name=="More")
 				Main.showMoreApps();
+				
+			if(gameObject.name=="X" && (stars>=iPage.unlock[PlayerPrefs.GetInt("page")])){
+				if(PlayerPrefs.GetInt("page")<1)
+					iMap.MSG_1.SetActive(true);
+				else if (PlayerPrefs.GetInt("page")<7)
+					iMap.MSG_2.SetActive(true);
+				else 
+					iMap.MSG_3.SetActive(true);
+			}
+
+			if(gameObject.name=="CloseMSG"){
+				iMap.MSG_1.SetActive(false);
+				iMap.MSG_2.SetActive(false);
+				iMap.MSG_3.SetActive(false);
+			}
 
 			if(gameObject.name=="Map"){
 				LoadScene(1);
@@ -70,12 +80,14 @@ public class Buttons : Main {
 			if(gameObject.name=="o_wordss")
 				Main.Open_Words();
 
+ 			if(gameObject.name == "AdsRevard")
+                GameObject.Find ("SX").SendMessage("rewardedAdsShow");
 
 			if(gameObject.name=="Backspace" && Main.next>0)
 			{
 				GameObject w = GameObject.Find("letter"+(Main.next-1).ToString());;
 				w.SendMessage("addLetters");
-				Main.check_next();
+				//Main.check_next();
 			}
 
 			if(gameObject.name=="Page_right")
@@ -88,11 +100,11 @@ public class Buttons : Main {
 				LoadScene(1);
 			}
 
-			if(gameObject.name=="pack1")Main.onBuy("pack1");
-			if(gameObject.name=="pack2")Main.onBuy("pack2");
-			if(gameObject.name=="pack3")Main.onBuy("pack3");
-			if(gameObject.name=="pack4")Main.onBuy("pack4");
-			if(gameObject.name=="pack5")Main.onBuy("pack5");	
+			if(gameObject.name=="pack1")Main.onBuy("wfw_p1");
+			if(gameObject.name=="pack2")Main.onBuy("wfw_p2");
+			if(gameObject.name=="pack3")Main.onBuy("wfw_p3");
+			if(gameObject.name=="pack4")Main.onBuy("wfw_p4");
+			if(gameObject.name=="pack5")Main.onBuy("wfw_p5");	
 			if(gameObject.name=="buy_page")Main.onBuy("page_"+PlayerPrefs.GetInt("page").ToString());
 
 
@@ -101,9 +113,9 @@ public class Buttons : Main {
 				int page = 0;
 				if(PlayerPrefs.HasKey("page"))page = PlayerPrefs.GetInt("page");
 				page++;
-				if(page>4)page=4;
+				if(page>7)page=7;
 				PlayerPrefs.SetInt("page", page);
-				LoadScene(1);
+				LoadScene(1); 
 			}
 
 			if(gameObject.name=="FaceBook")
@@ -115,6 +127,10 @@ public class Buttons : Main {
 
 			if(gameObject.name=="GameCenter")
 				Main.onLeaderBoard();	
+
+			if(gameObject.name=="ARCH")
+				Main.SX.GetComponent<SX_GameCenter>().showArchievements();
+
 
 			if (gameObject.name == "sound") {
 				Debug.Log("Here");

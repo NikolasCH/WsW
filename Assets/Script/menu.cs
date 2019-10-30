@@ -1,15 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class menu : MonoBehaviour {
+public class menu : Main {
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 
-		if(PlayerPrefs.GetInt("new")!=1)
+		if(PlayerPrefs.GetInt("new_v2")!=1)
+		{
+			PlayerPrefs.DeleteAll();
 			Main.install();
+		}
 
-		Main.stars =PlayerPrefs.GetInt("Star");
+		if(SX)
+			SX.GetComponent<SX_Ads>().smartBanneHide();
+
+		stars =PlayerPrefs.GetInt("Star");
+		SX = GameObject.Find ("SX");
 	}
 
 

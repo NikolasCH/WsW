@@ -26,17 +26,15 @@ public class letters : MonoBehaviour {
 	void OnPress (bool isDown)
 	{
 		if (isDown == false)
-		{
 			addLetters();	
-		}
 	}
 	
 	void FixedUpdate () {
-		if(Main.p[num]>=0 && !Main.play){
-			Vector3 mPos = pos.transform.position;
-			mPos.z=-1f;
-			transform.position = mPos;
-		}
+		//if(Main.p[num]>=0 && !Main.play){
+		//	Vector3 mPos = pos.transform.position;
+		//	mPos.z=-1f;
+		//	transform.position = mPos;
+		//}
 		if(Main.play && load){
 			load = false;	
 			Play();	
@@ -61,6 +59,7 @@ public class letters : MonoBehaviour {
 					}
 
 					pos = GameObject.Find("l"+Main.next.ToString());
+					
 					Main.p[num]= Main.next;
 					num_pos = Main.next;
 					Main.w[Main.next]=letter;
@@ -77,9 +76,8 @@ public class letters : MonoBehaviour {
 				StartPos.z=-1;
 				StartCoroutine( coTween( gameObject, 0.5f, StartPos) );	
 			}
-			Main.check_next();
+			Main.check_next(move);
 		}
-
 	}
 	
 	IEnumerator coTween( GameObject Obj, float time, Vector3 toPos) 
@@ -93,7 +91,5 @@ public class letters : MonoBehaviour {
             yield return 0;
         }
 		transform.position = toPos;
-
-
     }		
 }

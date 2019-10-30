@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using SA.Android.Firebase.Analytics;
 public class Main : MonoBehaviour {
 	
 	public static int Score = 0;
-	public static int block = 40;
 	public static int lvl = 1;	
 	public static int Coin = 500;
 	public static bool play = false;
@@ -15,7 +14,7 @@ public class Main : MonoBehaviour {
 	public static string word = "угадай";
 	public static string _word = "";
 	public static int next = 0;
-	public static int [] p =  new[]{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+	public static int [] p =  new[]{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	public static GameObject bg;
 	public static bool game =true;
 	public static UILabel _txt;
@@ -31,19 +30,26 @@ public class Main : MonoBehaviour {
 	public static int stars=0;
 	public static UISprite s_stars;
 
+	public static UISprite s_stars1;
+	public static UISprite s_stars2;
+	public static UISprite s_stars3;
+
+	public static Map iMap;
+	public static page iPage;
+
 	
-	public static int w_o=0;
+	public static int w_o=10;
 	public static int ws_o=0;
 	public static int l_o=0;
 
 	public static bool panel_buy = false;
 		
-
+	public static GameObject SX;
 	
 	public static Hashtable w = new Hashtable();  
 	public static Hashtable ws = new Hashtable();  
 	
-	public static void check_next () {
+	public static void check_next (bool check) {
 		int n=-1;
 		for(int j=0; j<p.Length; j++)
 		{	
@@ -56,16 +62,24 @@ public class Main : MonoBehaviour {
 
 			}
 		}
-		check_word();
+		if(!check)
+			check_word();
 	}
 
 	public static void check_stars() {
 		stars =PlayerPrefs.GetInt("Star");
 	}
+
+
 	
 	public static void check_word () {
+
+		Debug.Log("check_word");
+
 		int l=0;
 		string t ="";
+
+		string text ="";
 
 		for(int i=0; i<letters.Length; i++)
 		{
@@ -87,62 +101,30 @@ public class Main : MonoBehaviour {
 		_check.text = c_w.ToString()+"/"+letters.Length.ToString();
 
 	
-		ws.Clear();
 
-
-		_txt.text = "[000000]";
-
-
-		for(int s=0; s<col_word.Length; s++)
-		{
-			bool _color = false;
-			if(t.Length>0 && c_w>0 && t.Length<=col_word[s].Length){
-
-				int p = 0;
-				for(int a=0; a<t.Length; a++)
-				{
-
-					if(t[a]==col_word[s][a])p++;
-
-				}
-				if(p==t.Length)_color =true;
-
-			}
-
-			ws[col_word[s]] = 1;
-			if(_color)
-				_txt.text +=" [ff6633][b]"+col_word[s]+"[/b][-]";
-			else
-				_txt.text +=" "+col_word[s];
-		}
-
-
-
-		int k = 0;
-		if(PlayerPrefs.HasKey("o_"+lvl.ToString()))k = PlayerPrefs.GetInt("o_"+lvl.ToString());
-
-
+// проверяем сложилли пользователь слово
 		for(int j=0; j<letters.Length; j++)
 		{
 			if(ws[t]==null && t==letters[j].ToString().ToUpper() && game){
+				Debug.Log(t+ "- "+ws[t]+" -");
 				ws[t] = 1;
 				l+=1;
-				_txt.text +=" "+t;
 
 				if(g_word=="")
 					PlayerPrefs.SetString("lvl_"+lvl.ToString(), t);
 				else
 					PlayerPrefs.SetString("lvl_"+lvl.ToString(), g_word+","+t);
 
-				CoinAdd(1);
-				//CoinAdd(t.Length-k);
+				CoinAdd(1+PlayerPrefs.GetInt("page"));
+
+				AN_FirebaseAnalytics.LogEvent("open_word");
 
 				c_w++;
 				_check.text = c_w.ToString()+"/"+letters.Length.ToString();
 				int _star = 0;
-				if(c_w*100/letters.Length>=25)_star = 1;
-				if(c_w*100/letters.Length>=50)_star = 2;
-				if(c_w*100/letters.Length>=75)_star = 3;
+				if(c_w*100/letters.Length>=33)_star = 1;
+				if(c_w*100/letters.Length>=66)_star = 2;
+				if(c_w*100/letters.Length>=99)_star = 3;
 				if(_star>PlayerPrefs.GetInt("s_"+lvl.ToString())){
 					PlayerPrefs.SetInt("s_"+lvl.ToString(), _star);
 					stars=PlayerPrefs.GetInt("Star");
@@ -151,64 +133,171 @@ public class Main : MonoBehaviour {
 					ScoreUp();
 				}
 
+
 				GameObject w = GameObject.Find("word");
 				w.SendMessage("goodWord");	
 			}
 		}
 
+		g_word = PlayerPrefs.GetString("lvl_"+lvl.ToString());
+		
+		col_word = g_word.Split(","[0]);	
 
+		text = "[000000]";
 
-	
-		if(k>0 && ws[t]==null){
+		
 
-			_txt.text+="  \n\n[dddddd]";
-
-
-			for(int f=0; f<letters.Length; f++)
+		for(int i=0; i<letters.Length; i++)
+		{
+			bool open_word = false;
+			for(int s=0; s<col_word.Length; s++)
 			{
-				if(ws[letters[f].ToString().ToUpper()]==null){
-					for(int d=0; d<letters[f].Length; d++)
-					{
-						if(d<=k-1)
-							_txt.text +=letters[f][d];
-						else
-							_txt.text +="_";
+				if(col_word[s]==letters[i].ToString().ToUpper())
+				{
+					bool _color = false;
+					if(t.Length>0 && c_w>0 && t.Length<=col_word[s].Length){
+
+						int p = 0;
+						for(int a=0; a<t.Length; a++)
+						{
+
+							if(t[a]==col_word[s][a])p++;
+
+						}
+						if(p==t.Length)_color =true;
+
 					}
-					_txt.text +=" ";
+
+					ws[col_word[s]] = 1;
+					if(_color)
+						text +="    [EB2F00]"+col_word[s]+"[-]";
+					else
+						text +="    "+col_word[s];
+
+
+					open_word =true;
+				}
+			}
+			if(!open_word)
+			{
+				text +="    ";
+				for(int d=0; d<letters[i].Length; d++)
+				{
+					text +="●";
 				}
 			}
 
-			_txt.text+="[-]";
+
 		}
+
+
+		_txt.text = text+"";
+
 
 		PlayerPrefs.SetFloat("w_"+lvl.ToString(), letters.Length);
 		PlayerPrefs.SetFloat("c_"+lvl.ToString(), c_w);
 
-		s_stars.fillAmount =(float)c_w/letters.Length*1.3f;
+		s_stars.fillAmount =(float)c_w/letters.Length;
 
-		Cost_Letters();
+		s_stars1.gameObject.SetActive(c_w*100/letters.Length>=33);	
+		s_stars2.gameObject.SetActive(c_w*100/letters.Length>=66);
+		s_stars3.gameObject.SetActive(c_w*100/letters.Length>=99);
+		
+
+	
 		Cost_Word();
+
+		if( PlayerPrefs.GetFloat("w_"+lvl.ToString())==PlayerPrefs.GetFloat("c_"+lvl.ToString()) ){
+		    ArrayList f = new ArrayList { "Супер!", "Отлично!", "Невероятно!", "Круто!", "Прекрасно!", "Восхитительно!", "Превосходно!", "Поразительно!", "Прекрасно!", "Удивительно!", "Потрясающе!", "Фантастика!", "Изумительно!", "Потрясно!", "Сногсшибательно!", "Головокружительно!", "Грандиозно!", "Великолепно!" };
+        	GameObject finish = GameObject.Find("finish");
+			finish.GetComponent<UILabel>().text = f[Random.Range(0, f.Count - 1)].ToString();
+			finish.GetComponent<TweenScale>().ResetToBeginning();
+        	finish.GetComponent<TweenScale>().Play(true);
+		}
+		
 	}
 	
+
+	public static void onArchiments(){
+		
+
+		SX_GameCenter GameCenter = SX.GetComponent <SX_GameCenter>();
+
+		if (PlayerPrefs.GetInt("Star") >= 100 && !PlayerPrefs.HasKey ("achievement_100")) {
+			PlayerPrefs.SetInt ("achievement_100", 1);
+			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQAg");
+		} 
+		
+		 if (PlayerPrefs.GetInt("Star") >= 200 && !PlayerPrefs.HasKey ("achievement_200")) {
+			PlayerPrefs.SetInt ("achievement_200", 1);
+			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQAw");
+		} 
+		
+		 if (PlayerPrefs.GetInt("Star") >= 300 && !PlayerPrefs.HasKey ("achievement_300")) {
+			PlayerPrefs.SetInt ("achievement_300", 1);
+			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQBA");
+		} 
+		
+		 if (PlayerPrefs.GetInt("Star") >= 400 && !PlayerPrefs.HasKey ("achievement_400")) {
+			PlayerPrefs.SetInt ("achievement_400", 1);
+			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQBQ");
+		} 
+		
+		 if (PlayerPrefs.GetInt("Star") >= 500 && !PlayerPrefs.HasKey ("achievement_500")) {
+			PlayerPrefs.SetInt ("achievement_500", 1);
+			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQBg");
+		} 
+		
+		 if (PlayerPrefs.GetInt("Star") >= 600 && !PlayerPrefs.HasKey ("achievement_600")) {
+			PlayerPrefs.SetInt ("achievement_600", 1);
+			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQBw");
+		} 
+
+		if (PlayerPrefs.GetInt("Coin") >= 1000 && !PlayerPrefs.HasKey ("coin_1000")) {
+			PlayerPrefs.SetInt ("coin_1000", 1);
+			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQCA");
+		} else if (PlayerPrefs.GetInt("Coin") >= 2000 && !PlayerPrefs.HasKey ("coin_2000")) {
+			PlayerPrefs.SetInt ("coin_2000", 1);
+			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQCQ");
+		} else if (PlayerPrefs.GetInt("Coin") >= 3000 && !PlayerPrefs.HasKey ("coin_3000")) {
+			PlayerPrefs.SetInt ("coin_3000", 1);
+			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQCg");
+		}else if (PlayerPrefs.GetInt("Coin") >= 4000 && !PlayerPrefs.HasKey ("coin_4000")) {
+			PlayerPrefs.SetInt ("coin_4000", 1);
+			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQCw");
+		} else if (PlayerPrefs.GetInt("Coin") >= 5000 && !PlayerPrefs.HasKey ("coin_5000")) {
+			PlayerPrefs.SetInt ("coin_5000", 1);
+			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQDA");
+		} 
+	}
+
 	public static void Play(){
-		_w_o = (UILabel)GameObject.Find("_w_o").GetComponent("UILabel");
-		_ws_o = (UILabel)GameObject.Find("_ws_o").GetComponent("UILabel");
+
+		AN_FirebaseAnalytics.LogEvent("StartLevel");
 		_l_o = (UILabel)GameObject.Find("_l_o").GetComponent("UILabel");
 
 		_txt = (UILabel)GameObject.Find("txt").GetComponent("UILabel");
 		_check = (UILabel)GameObject.Find("check").GetComponent("UILabel");
 		s_stars = (UISprite)GameObject.Find("Star1").GetComponent("UISprite");
+		s_stars1 = (UISprite)GameObject.Find("Star_1").GetComponent("UISprite");
+		s_stars2 = (UISprite)GameObject.Find("Star_2").GetComponent("UISprite");
+		s_stars3 = (UISprite)GameObject.Find("Star_3").GetComponent("UISprite");
 
-		//PlayerPrefs.DeleteAll();
-		//PlayerPrefs.SetInt("lvl", 1);
-		//PlayerPrefs.SetInt("Coin", 5000);
-		onGameCenter();
+		SX.GetComponent<SX_Ads>().RevardsButton = GameObject.Find("AdsRevard");
+		SX.GetComponent<SX_Ads>().rewardedAdsLoad();
+
+		s_stars1.gameObject.SetActive(false);
+		s_stars2.gameObject.SetActive(false);
+		s_stars3.gameObject.SetActive(false);
+
 		Coin = PlayerPrefs.GetInt("Coin");
 
 		stars= PlayerPrefs.GetInt("Star");
 		lvl = PlayerPrefs.GetInt("lvl");
 
-		p = new[]{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+		postScoreToLeaderBoard( 0, stars);
+
+		p = new[]{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 		w.Clear();
 		ws.Clear();
 		next=0;
@@ -227,28 +316,29 @@ public class Main : MonoBehaviour {
 		LevelUp();
 
 		check_word ();
-
 	}
 
 
 	public static void Cost_Word () {	
 		w_o = 0;
-		ws_o = 0;
+		//ws_o = 0;
 		for(int f=0; f<letters.Length; f++)
 		{
 			string t =letters[f].ToString().ToUpper();
 			if(ws[t]==null){
-				if(w_o==0)w_o=letters[f].Length*2;
-				ws_o+=letters[f].Length*2;
+				if(w_o==0)w_o=10+(10*PlayerPrefs.GetInt("page"));
 			}
 		}
 		
 		_l_o.text= w_o.ToString();
-		_ws_o.text= ws_o.ToString();
+		//_ws_o.text= ws_o.ToString();
 	}
 
 	public static void Open_Word () {	
 		if(Coin>=w_o){
+
+			AN_FirebaseAnalytics.LogEvent("buy_word");
+
 			Coin-=w_o;
 			PlayerPrefs.SetInt("Coin", Coin);
 
@@ -280,9 +370,9 @@ public class Main : MonoBehaviour {
 					int _star = 0;
 					c_w++;
 
-					if(c_w*100/letters.Length>=25)_star = 1;
-					if(c_w*100/letters.Length>=50)_star = 2;
-					if(c_w*100/letters.Length>=75)_star = 3;
+					if(c_w*100/letters.Length>=33)_star = 1;
+					if(c_w*100/letters.Length>=66)_star = 2;
+					if(c_w*100/letters.Length>=99)_star = 3;
 
 					if(_star>PlayerPrefs.GetInt("s_"+lvl.ToString())){
 						PlayerPrefs.SetInt("s_"+lvl.ToString(), _star);
@@ -291,6 +381,7 @@ public class Main : MonoBehaviour {
 						PlayerPrefs.SetInt("Star", stars);
 						ScoreUp();
 					}
+	
 					break;
 				}
 			}
@@ -335,9 +426,9 @@ public class Main : MonoBehaviour {
 					int _star = 0;
 					c_w++;
 					
-					if(c_w*100/letters.Length>=25)_star = 1;
-					if(c_w*100/letters.Length>=50)_star = 2;
-					if(c_w*100/letters.Length>=75)_star = 3;
+					if(c_w*100/letters.Length>=33)_star = 1;
+					if(c_w*100/letters.Length>=66)_star = 2;
+					if(c_w*100/letters.Length>=99)_star = 3;
 					
 					if(_star>PlayerPrefs.GetInt("s_"+lvl.ToString())){
 						PlayerPrefs.SetInt("s_"+lvl.ToString(), _star);
@@ -365,7 +456,7 @@ public class Main : MonoBehaviour {
 			string t =letters[f].ToString().ToUpper();
 			if(ws[t]==null){
 				if(k<letters[f].Length)
-					l_o+=3;
+					l_o=0;
 			}
 		}
 		_w_o.text= l_o.ToString();
@@ -379,7 +470,8 @@ public class Main : MonoBehaviour {
 			Txt.text = Coin.ToString();
 
 			int k = 0;
-			if(PlayerPrefs.HasKey("o_"+lvl.ToString()))k = PlayerPrefs.GetInt("o_"+lvl.ToString());
+			if(PlayerPrefs.HasKey("o_"+lvl.ToString()))
+				k = PlayerPrefs.GetInt("o_"+lvl.ToString());
 
 			PlayerPrefs.SetInt("o_"+lvl.ToString(),k+1);
 
@@ -389,33 +481,38 @@ public class Main : MonoBehaviour {
 		}
 	}	
 
+	public static void AddAdsRevard(){
+		CoinAdd(150);
+		AN_FirebaseAnalytics.LogEvent("AddAdsRevard");
+		GameObject w = GameObject.Find("word");
+		w.SendMessage("onCoin");
+	}
+
 	public static void ScoreUp ( ) {
 		UILabel Txt = (UILabel)GameObject.Find("score_lbl").GetComponent("UILabel");	
 		Txt.text = PlayerPrefs.GetInt("Star").ToString();			
 	}	
 	
-	public static void CoinAdd (int AddScore) {	
-			Coins co = (Coins)GameObject.Find("coin_add").GetComponent("Coins");
-			co.coins.text = "+"+AddScore.ToString(); 
-			co.Add();
-			Coin+=AddScore;
-			PlayerPrefs.SetInt("Coin", Coin);
-			CoinUp();
-
-			if(AddScore>0)
-				Main.onShow();
+	public static void CoinAdd (int AddScore) 
+	{	
+		PlayerPrefs.SetInt("Coin", Coin+AddScore);		
+		CoinUp();
+		onArchiments();
+		Coins co = (Coins)GameObject.Find("coin_add").GetComponent("Coins");
+		co.coins.text = "+"+AddScore.ToString(); 
+		co.Add();
 	}	
 	
-	public static void CoinUp ( ) {	
-			int _coin  = PlayerPrefs.GetInt("Coin");
-			UILabel Txt = (UILabel)GameObject.Find("coin_lbl").GetComponent("UILabel");		
-			Txt.text = _coin.ToString();			
+	public static void CoinUp ( ) 
+	{	
+		Coin  = PlayerPrefs.GetInt("Coin");
+		GameObject.Find("coin_lbl").GetComponent<UILabel>().text = Coin.ToString();			
 	}	
 
-	public static void LevelAdd ( ) {
-			lvl = PlayerPrefs.GetInt("lvl");
-			lvl+=1;
-			PlayerPrefs.SetInt("lvl", lvl);
+	public static void LevelAdd ( ) 
+	{
+		lvl = PlayerPrefs.GetInt("lvl")+1;
+		PlayerPrefs.SetInt("lvl", lvl);
 	}	
 	
 	public static void LevelUp ( ) {	
@@ -429,7 +526,7 @@ public class Main : MonoBehaviour {
 	}
 	
 	public static void buy ( ) {		
-		PlayerPrefs.SetInt("Ad", 1);	
+		AN_FirebaseAnalytics.LogEvent("Buy_Coins");
 		GameObject w = GameObject.Find("word");;
 		w.SendMessage("onCoin");
 	}
@@ -443,9 +540,7 @@ public class Main : MonoBehaviour {
 	public static void onBuy (string product)
 	{
 		Debug.Log("InApp " + product);
-		GameObject InApp = GameObject.Find("InApp");
-		InAppAI ch = (InAppAI)InApp.GetComponent("InAppAI");
-		ch.onInApp(product);
+		GameObject.Find("SX").GetComponent<SX_InApp_Android>().Purchase(product);
 	}
 
 	public static void showMoreApps ()
@@ -455,38 +550,25 @@ public class Main : MonoBehaviour {
 	public static void onLeaderBoard ()
 	{
 		Debug.Log("onLeaderBoard");
-		GameObject gameCenter = GameObject.Find("GameCenter");
-		GameCenterAI gm = (GameCenterAI)gameCenter.GetComponent("GameCenterAI");
-		gm.onShowLeaderBoard();
+		GameObject.Find("SX").GetComponent<SX_GameCenter>().showLeaderBoards(null);
 	}
 
 	public static void postScoreToLeaderBoard(int id,int _score)
 	{
-		GameObject gameCenter = GameObject.Find("GameCenter");
-		GameCenterAI gm = (GameCenterAI)gameCenter.GetComponent("GameCenterAI");
-		gm.onSubmitScore(_score);
+		SX.GetComponent<SX_GameCenter>().submitPlayerScore(null , _score);
 	}
 
 	public static void onShowInterstitial ()
 	{
 		Debug.Log ("onShowInterstitial");
 		if (PlayerPrefs.GetInt ("Ad") != 1)
-			GameObject.Find ("AdMob").GetComponent<AdMobAI> ().ShowInterstitial ();
+			SX.GetComponent<SX_Ads> ().showWhenReadyNonRewarded ();
 	}
 
 
 	public static void onShow(){
 		Debug.Log(ShowTime);
-		if(PlayerPrefs.GetInt("Ad")!=1){
-			if (ShowTime == 3)
-			{
-				onShowInterstitial ();
-			}	else	{	
-				if (ShowTime > 9)
-					ShowTime = 0;	
-			}	
-			ShowTime++;
-		}
+
 	}
 	
 	
@@ -527,7 +609,7 @@ public class Main : MonoBehaviour {
 			PlayerPrefs.SetInt("o7", -1);
 			PlayerPrefs.SetInt("o8", -1);
 			PlayerPrefs.SetInt("num_lett", -1);
-			PlayerPrefs.SetInt("new", 1);
+			PlayerPrefs.SetInt("new_v2", 1);
 			PlayerPrefs.SetInt("lvl", 1);
 			PlayerPrefs.SetInt("Coin", 50);
 			PlayerPrefs.SetInt("Score", 0);
@@ -537,8 +619,4 @@ public class Main : MonoBehaviour {
 			PlayerPrefs.SetInt("Ad",0);
 	}
 	
-	public static void onGameCenter(){
-		postScoreToLeaderBoard(0,stars);
-	}	
-
 }

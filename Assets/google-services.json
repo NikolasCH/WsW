@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "592931438550",
+    "firebase_url": "https://ws-new-6310b.firebaseio.com",
+    "project_id": "ws-new-6310b",
+    "storage_bucket": "ws-new-6310b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592931438550:android:7ba6beac36685a2c512e77",
+        "android_client_info": {
+          "package_name": "com.sayrex.wfw"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "592931438550-2puj6c95i8vctf6i837gs9tdg1oa7c9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBSw00-qU-jgFUbIwkc0wxXC6AytSLt4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "592931438550-2puj6c95i8vctf6i837gs9tdg1oa7c9k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

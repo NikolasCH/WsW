@@ -39,7 +39,22 @@ public class word : MonoBehaviour {
 	void word_latter () {
 		for(int i=0; i<Main.letter; i++)
 		{
-			CreateButton(_parent,(-90*(Main.letter-1))/2+90f*i,-100f, 1f, 1f , "", i);
+			
+			if(Main.word.Length<10)
+			{
+				CreateButton(_parent,(-90*(Main.letter-1))/2+90f*i,-100f, 1f, 1f , "", i);
+			}
+			else if(Main.word.Length<13)
+			{
+				CreateButton(_parent,((-90*(Main.letter-1))/2+90f*i)*0.95f,-100f, 0.95f, 0.95f , "", i);	
+			}
+			else
+			{
+				CreateButton(_parent,((-90*(Main.letter-1))/2+90f*i)*0.85f,-100f, 0.85f, 0.85f , "", i);	
+			}
+			
+			
+
 			if(PlayerPrefs.GetInt("open")==1){
 				UILabel nl = (UILabel)GameObject.Find("lbl"+i).GetComponent("UILabel");
 				nl.text = Main.word[i].ToString().ToUpper();
@@ -94,7 +109,10 @@ public class word : MonoBehaviour {
 
 		//go = Resources.Load("l") as GameObject;
 		go.transform.localPosition = new Vector3(x, y, 0f);
-		go.transform.localScale = new Vector3(1f, 1f, 1f);
+
+		go.transform.localScale = new Vector3(sx, sy, 1f);
+		
+
         go.name = "letter"+number.ToString();
 		
 		letters bt = go.AddComponent<letters>();
@@ -214,6 +232,7 @@ public class word : MonoBehaviour {
 			go.SendMessage("addLetters");
 
 		Main.game = true;
+		Main.check_word();
 	}
 
 	public void goodWord ( ) {	
