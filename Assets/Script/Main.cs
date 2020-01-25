@@ -223,50 +223,39 @@ public class Main : MonoBehaviour {
 
 		SX_GameCenter GameCenter = SX.GetComponent <SX_GameCenter>();
 
-		if (PlayerPrefs.GetInt("Star") >= 100 && !PlayerPrefs.HasKey ("achievement_100")) {
-			PlayerPrefs.SetInt ("achievement_100", 1);
+		if (PlayerPrefs.GetInt("Star") >= 100 && !PlayerPrefs.HasKey ("CgkIhYqZveMVEAIQAg")) {
 			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQAg");
 		} 
 		
-		 if (PlayerPrefs.GetInt("Star") >= 200 && !PlayerPrefs.HasKey ("achievement_200")) {
-			PlayerPrefs.SetInt ("achievement_200", 1);
+		 if (PlayerPrefs.GetInt("Star") >= 200 && !PlayerPrefs.HasKey ("CgkIhYqZveMVEAIQAw")) {
 			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQAw");
 		} 
 		
-		 if (PlayerPrefs.GetInt("Star") >= 300 && !PlayerPrefs.HasKey ("achievement_300")) {
-			PlayerPrefs.SetInt ("achievement_300", 1);
+		 if (PlayerPrefs.GetInt("Star") >= 300 && !PlayerPrefs.HasKey ("CgkIhYqZveMVEAIQBA")) {
 			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQBA");
 		} 
 		
-		 if (PlayerPrefs.GetInt("Star") >= 400 && !PlayerPrefs.HasKey ("achievement_400")) {
-			PlayerPrefs.SetInt ("achievement_400", 1);
+		 if (PlayerPrefs.GetInt("Star") >= 400 && !PlayerPrefs.HasKey ("CgkIhYqZveMVEAIQBQ")) {
 			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQBQ");
 		} 
 		
-		 if (PlayerPrefs.GetInt("Star") >= 500 && !PlayerPrefs.HasKey ("achievement_500")) {
-			PlayerPrefs.SetInt ("achievement_500", 1);
+		 if (PlayerPrefs.GetInt("Star") >= 500 && !PlayerPrefs.HasKey ("CgkIhYqZveMVEAIQBg")) {
 			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQBg");
 		} 
 		
-		 if (PlayerPrefs.GetInt("Star") >= 600 && !PlayerPrefs.HasKey ("achievement_600")) {
-			PlayerPrefs.SetInt ("achievement_600", 1);
+		 if (PlayerPrefs.GetInt("Star") >= 600 && !PlayerPrefs.HasKey ("CgkIhYqZveMVEAIQBw")) {
 			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQBw");
 		} 
 
-		if (PlayerPrefs.GetInt("Coin") >= 1000 && !PlayerPrefs.HasKey ("coin_1000")) {
-			PlayerPrefs.SetInt ("coin_1000", 1);
+		if (PlayerPrefs.GetInt("Coin") >= 1000 && !PlayerPrefs.HasKey ("CgkIhYqZveMVEAIQCA")) {
 			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQCA");
-		} else if (PlayerPrefs.GetInt("Coin") >= 2000 && !PlayerPrefs.HasKey ("coin_2000")) {
-			PlayerPrefs.SetInt ("coin_2000", 1);
+		} else if (PlayerPrefs.GetInt("Coin") >= 2000 && !PlayerPrefs.HasKey ("CgkIhYqZveMVEAIQCQ")) {
 			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQCQ");
-		} else if (PlayerPrefs.GetInt("Coin") >= 3000 && !PlayerPrefs.HasKey ("coin_3000")) {
-			PlayerPrefs.SetInt ("coin_3000", 1);
+		} else if (PlayerPrefs.GetInt("Coin") >= 3000 && !PlayerPrefs.HasKey ("CgkIhYqZveMVEAIQCg")) {
 			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQCg");
-		}else if (PlayerPrefs.GetInt("Coin") >= 4000 && !PlayerPrefs.HasKey ("coin_4000")) {
-			PlayerPrefs.SetInt ("coin_4000", 1);
+		}else if (PlayerPrefs.GetInt("Coin") >= 4000 && !PlayerPrefs.HasKey ("CgkIhYqZveMVEAIQCw")) {
 			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQCw");
-		} else if (PlayerPrefs.GetInt("Coin") >= 5000 && !PlayerPrefs.HasKey ("coin_5000")) {
-			PlayerPrefs.SetInt ("coin_5000", 1);
+		} else if (PlayerPrefs.GetInt("Coin") >= 5000 && !PlayerPrefs.HasKey ("CgkIhYqZveMVEAIQDA")) {
 			GameCenter.unlockAchievement ("CgkIhYqZveMVEAIQDA");
 		} 
 	}
@@ -540,7 +529,7 @@ public class Main : MonoBehaviour {
 	public static void onBuy (string product)
 	{
 		Debug.Log("InApp " + product);
-		GameObject.Find("SX").GetComponent<SX_InApp_Android>().Purchase(product);
+		GameObject.Find("SX").SendMessage("Purchase",product);
 	}
 
 	public static void showMoreApps ()

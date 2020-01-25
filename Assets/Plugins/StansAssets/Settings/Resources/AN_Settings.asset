@@ -30,7 +30,7 @@ MonoBehaviour:
   MediaPlayer: 0
   LocalNotifications: 1
   SkipPermissionsDialog: 0
-  RSAPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqm9uQzL6ZjNdln9s0hrBP/Dm4Jwx/t1ynoZyFn7H9FeN64FAj49A/lI1k3bn2M/CPpiBE9FS2tpRGXUf3IEzJ1IsMcV0aRg3yMZkktw/USMYPx0RzzjWLnT3e4ywaGXHIL+T8Rqm0Z/M5hOhc4z4DcrSKwjATEQTq9UrNRBtilA82VntoM4RvoYIWjj3p7FQQzSCY33idfyWb6V5LW0QGR+CBaRPcp59hZNtdT/Qzd9mZ+w5HY3wZjTtt8aHhZFh2a7T4jNyDRvjpXBM8f3hAn3mS0AFrtQToijjFC3yWIcNHCQKK9ipZvmuOF8Bk0QVUhXqLjVNg0sMWJSROy0iSwIDAQAB
+  RSAPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApacSqeb851t0evgiFGm6eFTQoLbvFrDTZOeHWP8Cg4oitlR+/icho1sJ8nGNPlWwNAkNK+QMxiApBdN5RURK2xbbcj6ehwjVP6aYfYRcOc7GKjjIDNvS05OCJ7mYqlCXlnafmV+M6tBoz7TXNaW6F6z3XwTRauOLBHUyOd0gTfn0ipvmgZiuLhE5JXsoOScCBakrHluH8i/DpZxCOseSUVTBqwSLPYMBTGpo+7ezTkHhpuyNDTdCDANTeMrcWZv/f2UdRCatSZkR3PGlL8W2yDxaP6VuTdZHC83Ku1DhPUTnIoy6pbIR89acVl1tn+tS6WWd+Z7sdTvVoueWltU27wIDAQAB
   InAppProducts:
   - m_Type: inapp
     m_Sku: wfw_p1
@@ -272,5 +272,5 @@ MonoBehaviour:
     m_OriginalJson: 
     m_IsConsumable: 0
     m_SkuDetailsHashId: 0
-  Licensing: 1
+  Licensing: 0
   GooglePlayGamesAPI: 1

@@ -20,8 +20,7 @@
     <activity android:name="com.stansassets.android.app.notifications.AN_NotificationLaunchActivity" android:launchMode="singleTask" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
   </application>
   <uses-permission android:name="com.android.vending.BILLING" />
-  <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
-  <uses-permission android:name="android.permission.WAKE_LOCK" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
 </manifest>
