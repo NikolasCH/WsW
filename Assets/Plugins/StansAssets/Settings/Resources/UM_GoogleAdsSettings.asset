@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LastVersionCode: 
   AndroidIds:
-    AppId: ca-app-pub-4222284856413264~2683365285
-    BannerId: ca-app-pub-4222284856413264/7351924951
-    NonRewardedId: ca-app-pub-4222284856413264/1333311510
-    RewardedId: ca-app-pub-4222284856413264/1716454891
+    AppId: 
+    BannerId: 
+    NonRewardedId: 
+    RewardedId: 
   IOSIds:
-    AppId: ca-app-pub-4222284856413264~7287887291
-    BannerId: ca-app-pub-4222284856413264/5783233932
-    NonRewardedId: ca-app-pub-4222284856413264/7323546310
-    RewardedId: ca-app-pub-4222284856413264/6010464641
+    AppId: 
+    BannerId: 
+    NonRewardedId: 
+    RewardedId: 
   TestDevices: []
   Keywords: []
   TagForChildDirectedTreatment: 0
-  NPA: 0
+  NPA: 1
   BannerPosition: 1
   BannerSize: 4
   Gender: 0
